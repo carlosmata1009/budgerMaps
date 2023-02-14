@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EarlyCheck: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Not working yet")
     }
 }
 

@@ -9,7 +9,6 @@ import Foundation
 
 final class CustomersViewModel: ObservableObject{
     @Published var customers: [Customer] = []
-    @Published var customerDate: [CustomerDate] = []
     @Published var hasError = false
     @Published var error: CustomerError?
     
@@ -30,7 +29,7 @@ final class CustomersViewModel: ObservableObject{
                             let decoder = JSONDecoder()
                             decoder.keyDecodingStrategy = .convertFromSnakeCase
                         
-                            //Ordenar alfabeticamente y por trabajo
+                            //Ordenar alfabeticamente por nombre
                              if let data = data,
                                var customers = try? decoder.decode([Customer].self, from: data){
                                 customers.sort{
@@ -61,10 +60,14 @@ final class CustomersViewModel: ObservableObject{
                             self.hasError = true
                             self.error = CustomerError.custom(error: error)
                         }else{
+                            
                             let decoder = JSONDecoder()
                             decoder.keyDecodingStrategy = .convertFromSnakeCase
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "dd/MM/yyyy"
+                            
                         
-                            //Ordenar alfabeticamente y por trabajo
+                            //Ordenar alfabeticamente por trabajo
                              if let data = data,
                                var customers = try? decoder.decode([Customer].self, from: data){
                                 customers.sort{
@@ -72,6 +75,40 @@ final class CustomersViewModel: ObservableObject{
                                 }
 
                                 self.customers = customers
+                            }else{
+                                self.hasError = true
+                                self.error = CustomerError.failedToDecode
+                            }
+                    }
+                }
+            }.resume()
+        }
+    }
+    func fetchCustomersByEarlyDate(){
+        
+        hasError = false
+        
+        if let url = URL(string: "https://19h0vwjnce.execute-api.eu-west-3.amazonaws.com/MobileInternshipAPI/data") {
+        
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                    
+                    DispatchQueue.main.async {
+                        
+                        if let error = error {
+                            self.hasError = true
+                            self.error = CustomerError.custom(error: error)
+                        }else{
+                            let decoder = JSONDecoder()
+                            decoder.keyDecodingStrategy = .convertFromSnakeCase
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "dd/MM/yyyy"
+                             if let data = data,
+                               var customers = try? decoder.decode([Customer].self, from: data){
+//                              Trying to sort customers by date, but not working because of null values, still working on it
+//                                 customers.sort{
+//                                     dateFormatter.date(from: $0.lastCheckIn ?? "null")! > dateFormatter.date(from: $1.lastCheckIn ?? "null")!
+//                                 }
+                            self.customers = customers
                             }else{
                                 self.hasError = true
                                 self.error = CustomerError.failedToDecode

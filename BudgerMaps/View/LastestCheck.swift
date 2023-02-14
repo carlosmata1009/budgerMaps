@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct LastestCheck: View {
+    @StateObject private var cvm = CustomersViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            Text("Not working yet, still working on it")
     }
 }
-
 struct LastCheck_Previews: PreviewProvider {
     static var previews: some View {
         LastestCheck()

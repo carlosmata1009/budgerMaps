@@ -33,15 +33,16 @@ struct Customer: Decodable {
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
-        self.lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-        self.street = try container.decodeIfPresent(String.self, forKey: .street)
-        self.city = try container.decodeIfPresent(String.self, forKey: .city)
-        self.type = try container.decodeIfPresent(String.self, forKey: .type)
-        self.lastCheckIn = try container.decodeIfPresent(String.self, forKey: .lastCheckIn)
-        self.job = try container.decodeIfPresent(String.self, forKey: .job)
-        self.company = try container.decodeIfPresent(String.self, forKey: .company)
-       /* do {
+        self.firstName = try container.decodeIfPresent(String.self, forKey: .firstName) ?? "null"
+        self.lastName = try container.decodeIfPresent(String.self, forKey: .lastName) ?? "null"
+        self.street = try container.decodeIfPresent(String.self, forKey: .street) ?? "null"
+        self.city = try container.decodeIfPresent(String.self, forKey: .city) ?? "null"
+        self.type = try container.decodeIfPresent(String.self, forKey: .type) ?? "null"
+        self.lastCheckIn = try container.decodeIfPresent(String.self, forKey: .lastCheckIn) ?? "null"
+        self.job = try container.decodeIfPresent(String.self, forKey: .job) ?? "null"
+        self.company = try container.decodeIfPresent(String.self, forKey: .company) ?? "null"
+       /*Trying to catch if my value is an int, string or null value, but its not working yet. Because of null values.
+        do {
             phone = try String(container.decode(Int.self, forKey: .phone))
         } catch DecodingError.typeMismatch{
             phone = try container.decodeIfPresent(String.self, forKey: .phone)
@@ -55,18 +56,5 @@ struct Customer: Decodable {
         }
         */
         
-    }
-}
-struct CustomerDate: Decodable {
-    
-    let lastCheckIn: String?
-    
-    private enum CodingKeys: String, CodingKey{
-        
-        case lastCheckIn = "Last Check-In Date"
-    }
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.lastCheckIn = try container.decodeIfPresent(String.self, forKey: .lastCheckIn)
     }
 }
